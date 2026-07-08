@@ -1,0 +1,206 @@
+.sticky-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  text-align: center;
+  padding: 0;
+  margin: 0 0 1rem 0 !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.sticky-banner.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+.sticky-banner img {
+  max-width: 600px !important;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto !important;
+}
+
+.shake {
+  animation: lp-shake 0.5s ease-in-out;
+}
+
+@keyframes lp-shake {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(-4px, 0) rotate(-1deg);
+  }
+  40% {
+    transform: translate(4px, 0) rotate(1deg);
+  }
+  60% {
+    transform: translate(-3px, 0) rotate(-0.5deg);
+  }
+  80% {
+    transform: translate(3px, 0) rotate(0.5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+figure.scroll-img {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+figure.scroll-img img {
+  max-width: none !important;
+  width: auto;
+  display: block;
+}
+
+.shine,
+.wp-block-button.shine .wp-block-button__link {
+  position: relative;
+  overflow: hidden;
+}
+.shine::before,
+.wp-block-button.shine .wp-block-button__link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: skewX(-20deg);
+  animation: lp-shine 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes lp-shine {
+  0% {
+    left: -75%;
+  }
+  40% {
+    left: 125%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+.w-90 {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bounce {
+  display: block !important;
+  animation: lp-bounce 1.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes lp-bounce {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  30% {
+    transform: scale(1) translateY(-16px);
+  }
+  50% {
+    transform: scale(1) translateY(0);
+  }
+  65% {
+    transform: scale(1) translateY(-8px);
+  }
+  80% {
+    transform: scale(1) translateY(0);
+  }
+  90% {
+    transform: scale(1) translateY(-3px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+body.lp2-page {
+  min-width: 320px;
+  word-wrap: break-word;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+.lp2-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+body.lp2-page .lp2-container > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+body.lp2-page .lp2-container .wp-block-image,
+body.lp2-page .lp2-container .wp-block-cover,
+body.lp2-page .lp2-container .wp-block-group,
+body.lp2-page .lp2-container .wp-block-columns,
+body.lp2-page .lp2-container .wp-block-media-text,
+body.lp2-page .lp2-container .wp-block-separator,
+body.lp2-page .lp2-container .wp-block-spacer,
+body.lp2-page .lp2-container .wp-block-buttons,
+body.lp2-page .lp2-container .wp-block-heading,
+body.lp2-page .lp2-container .wp-block-paragraph,
+body.lp2-page .lp2-container .wp-block-list {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+body.lp2-page .lp2-container .wp-block-image {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+body.lp2-page .lp2-container .wp-block-image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+body.lp2-page .lp2-container .wp-block-image figcaption {
+  margin: 0;
+}
+body.lp2-page .lp2-container figure.wp-block-image {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+body.lp2-page .lp2-container .lp-quiz-next .wp-block-button__link.selected {
+  background: #ffc107;
+  color: #fff;
+  border-color: #51a5df;
+}
+body.lp2-page .lp2-container .wp-block-button:not(.is-style-outline) {
+  margin: 0;
+  text-align: center;
+}
+body.lp2-page .lp2-container .wp-block-button:not(.is-style-outline) .wp-block-button__link {
+  display: inline-block;
+  background: #ff6b35;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 16px 40px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+body.lp2-page .lp2-container .wp-block-button:not(.is-style-outline) .wp-block-button__link:hover {
+  background: #e55a25;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/*# sourceMappingURL=style-lp2.css.map */

@@ -1,0 +1,165 @@
+/**
+ * LP専用スクリプト
+ *
+ * 機能:
+ * - クイズ/アンケートUI（タップで選択状態 → 次セクションへスクロール）
+ * - スムーズスクロール
+ * - 紙吹雪エフェクト（p_cracker クラスで発火）
+ */
+document.addEventListener("DOMContentLoaded", function () {
+  // ==============================================
+  // クイズ/アンケートUI
+  // ==============================================
+  var quizButtons = document.querySelectorAll(
+    ".lp-quiz-next a, a.lp-quiz-next"
+  );
+
+  quizButtons.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      var href = this.getAttribute("href");
+      if (!href || href === "#") return;
+
+      var target = document.querySelector(href);
+      if (!target) return;
+
+      // ボタンに選択済みスタイルを付与（同じステップ内の他を解除）
+      var parentStep = this.closest(".lp-quiz-step");
+      if (parentStep) {
+        var siblingBtns = parentStep.querySelectorAll(
+          ".lp-quiz-next a, a.lp-quiz-next"
+        );
+        siblingBtns.forEach(function (sib) {
+          sib.classList.remove("selected");
+        });
+      }
+      this.classList.add("selected");
+
+      // スムーズスクロール
+      setTimeout(function () {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 300);
+    });
+  });
+
+  // ==============================================
+  // スムーズスクロール（通常のアンカーリンク用）
+  // ==============================================
+  var anchorLinks = document.querySelectorAll(
+    '.lp-container a[href^="#"]:not(.lp-quiz-next a):not(a.lp-quiz-next)'
+  );
+
+  anchorLinks.forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      var targetId = this.getAttribute("href");
+      if (targetId === "#") return;
+      if (this.closest(".lp-quiz-next")) return;
+
+      var target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    });
+  });
+
+  // ==============================================
+  // 追従バナー（1stビュー超えでフェードイン、フッター到達でフェードアウト）
+  // ==============================================
+  var stickyBanner = document.querySelector(".sticky-banner");
+  if (stickyBanner) {
+    var firstViewHeight = window.innerHeight;
+    var lpContainer = document.querySelector(".lp-container") || document.querySelector(".lp2-container");
+
+    // シェイクを定期的に発火
+    setInterval(function () {
+      if (stickyBanner.classList.contains("is-visible")) {
+        stickyBanner.classList.add("shake");
+        setTimeout(function () {
+          stickyBanner.classList.remove("shake");
+        }, 500);
+      }
+    }, 5000);
+
+    window.addEventListener("scroll", function () {
+      var scrollY = window.scrollY;
+      var containerBottom = lpContainer
+        ? lpContainer.offsetTop + lpContainer.offsetHeight
+        : document.body.scrollHeight;
+      var windowBottom = scrollY + window.innerHeight;
+
+      if (scrollY >= firstViewHeight && windowBottom < containerBottom - 100) {
+        stickyBanner.classList.add("is-visible");
+      } else {
+        stickyBanner.classList.remove("is-visible");
+      }
+    });
+  }
+
+  // ==============================================
+  // .shake（追従バナー以外）をビューポート進入時に5秒ごと繰り返し振動
+  // ==============================================
+  var shakeTargets = document.querySelectorAll(".shake:not(.sticky-banner)");
+  if (shakeTargets.length > 0 && "IntersectionObserver" in window) {
+    var shakeTimers = new WeakMap();
+    var triggerShake = function (el) {
+      el.classList.remove("shake");
+      void el.offsetWidth;
+      el.classList.add("shake");
+    };
+    var shakeObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var el = entry.target;
+        if (entry.isIntersecting) {
+          if (shakeTimers.has(el)) return;
+          triggerShake(el);
+          var id = setInterval(function () {
+            triggerShake(el);
+          }, 5000);
+          shakeTimers.set(el, id);
+        } else {
+          var id = shakeTimers.get(el);
+          if (id) {
+            clearInterval(id);
+            shakeTimers.delete(el);
+          }
+        }
+      });
+    });
+    shakeTargets.forEach(function (el) {
+      shakeObserver.observe(el);
+    });
+  }
+
+  // ==============================================
+  // 紙吹雪エフェクト（.p_cracker にスクロールが到達したら発火）
+  // ==============================================
+  var crackers = document.querySelectorAll(".p_cracker");
+  if (crackers.length > 0 && typeof confetti === "function") {
+    var fired = Array(crackers.length).fill(false);
+
+    window.addEventListener("scroll", function () {
+      var scrollMid = window.scrollY + window.innerHeight / 2;
+
+      crackers.forEach(function (el, i) {
+        if (fired[i]) return;
+        var elTop = el.getBoundingClientRect().top + window.scrollY;
+
+        if (scrollMid >= elTop) {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+          });
+          fired[i] = true;
+        }
+      });
+    });
+  }
+});
